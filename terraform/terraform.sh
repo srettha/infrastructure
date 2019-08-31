@@ -40,6 +40,14 @@ function init() {
 
 function load_environment() {
     . ${DIR}/env.sh
+
+    cp ${directory}/main.tf ${directory}/main.tf-e
+    sed -i "" -e "s/DIGITALOCEAN_TOKEN/${DIGITALOCEAN_TOKEN}/g" ${directory}/main.tf
+}
+
+function clean_up_environment() {
+    rm ${directory}/main.tf
+    mv ${directory}/main.tf-e ${directory}/main.tf
 }
 
 function exec_terraform() {
@@ -47,19 +55,16 @@ function exec_terraform() {
         plan )
             cd "${directory}"
             init
-            load_environment
             terraform plan ${options}
             ;;
         apply )
             cd "${directory}"
             init
-            load_environment
             terraform apply ${options}
             ;;
         destroy )
             cd "${directory}"
             init
-            load_environment
             terraform destroy ${options}
             ;;
     esac
@@ -67,7 +72,9 @@ function exec_terraform() {
 
 function main() {
     validate_variable
+    load_environment
     exec_terraform
+    clean_up_environment
 }
 
 while [ "$1" != "" ]; do
