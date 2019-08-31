@@ -2,6 +2,8 @@
 
 set -e
 
+DIR=$(dirname "$0")
+
 function usage() {
     echo "Usage:"
     echo "        ./terraform.sh -p <profile> -d <working directory> -c <command>"
@@ -36,21 +38,28 @@ function init() {
     terraform init
 }
 
+function load_environment() {
+    . ${DIR}/env.sh
+}
+
 function exec_terraform() {
     case ${command} in
         plan )
             cd "${directory}"
             init
+            load_environment
             terraform plan ${options}
             ;;
         apply )
             cd "${directory}"
             init
+            load_environment
             terraform apply ${options}
             ;;
         destroy )
             cd "${directory}"
             init
+            load_environment
             terraform destroy ${options}
             ;;
     esac
