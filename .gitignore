@@ -30,5 +30,8 @@ override.tf.json
 terraform/*/prod/files/*.pub
 terraform/*/staging/files/*.pub
 
+# stub main file
+terraform/**/main.tf-e
+
 # environment files
 env.sh
