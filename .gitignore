@@ -31,4 +31,4 @@ terraform/*/prod/files/*.pub
 terraform/*/staging/files/*.pub
 
 # environment files
-.env
+env.sh
